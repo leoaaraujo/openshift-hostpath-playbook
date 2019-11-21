@@ -6,8 +6,8 @@ prometheus
 cassandra
 
 [prometheus]
-infra04-latamconsultingocp-dpwxzuuo.srv.ravcloud.com
-infra05-latamconsultingocp-ebgwm0t4.srv.ravcloud.com
+infra01.local
+infra02.local
 
 [cassandra]
-infra03-latamconsultingocp-rho2vy4e.srv.ravcloud.com
+infra03.local
