@@ -59,7 +59,9 @@ Playbook for configure hostpath to cassandra and prometheus in Openshift.
 
 - ### Run:
 `ansible-playbook -i hosts playbook_hostpath.yaml -e "app=prometheus"`
+
 or
+
 `ansible-playbook -i hosts playbook_hostpath.yaml -e "app=cassandra"`
 
 
