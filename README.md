@@ -1,5 +1,5 @@
 # Openshift hostPath Playbook
-Playbook for configure hostpath to cassandra and prometheus in Openshift.
+Playbook to configure hostpath to cassandra and prometheus in Openshift.
 
 
 - ### Files:
