@@ -1,0 +1,13 @@
+[all:vars]
+ansible_become=true
+
+[servers:children]
+prometheus
+cassandra
+
+[prometheus]
+infra04-latamconsultingocp-dpwxzuuo.srv.ravcloud.com
+infra05-latamconsultingocp-ebgwm0t4.srv.ravcloud.com
+
+[cassandra]
+infra03-latamconsultingocp-rho2vy4e.srv.ravcloud.com

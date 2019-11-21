@@ -1,0 +1,7 @@
+- name: Create a xfs filesystem on {{ item.device }}
+  filesystem:
+    fstype: xfs
+    dev: "{{ item.device + '1' }}"
+  with_items:
+    - "{{ openshift }}" 
+  when: item.name == "{{ app }}" 

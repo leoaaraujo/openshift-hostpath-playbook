@@ -1,0 +1,61 @@
+---
+- hosts: all
+  name: Openshift - Configure hostPath
+  become: true
+  gather_facts: true
+  tasks:
+  
+    - name: Load variables
+      include_vars:
+        file: vars.yaml
+
+    - block:
+        - name: Include Task Partitions
+          include_tasks: tasks/partition.yaml
+
+        - name: Include Task Filesystem
+          include_tasks: tasks/filesystem.yaml
+      
+        - name: Include Task Mount
+          include_tasks: tasks/mount.yaml
+      when: ( app is defined and inventory_hostname in groups[app] )
+
+
+- hosts: localhost
+  tasks:
+
+    - name: Load variables
+      include_vars:
+        file: vars.yaml
+
+    - name: Stop Cassandra
+      shell: >-
+        oc scale --replicas=0 rc/hawkular-cassandra-1 -n openshift-infra
+      when: app == "cassandra"
+
+    - name: Stop Prometheus
+      shell: >-
+        oc scale --replicas=0 statefulset/prometheus-k8s -n openshift-monitoring
+      when: app == "prometheus"
+
+    - name: Include Task Volume
+      include_tasks: tasks/volume.yaml
+
+    - name: Include Task Policy
+      include_tasks: tasks/policy.yaml
+        
+    - name: Include Tasks NodeSelector and Labels
+      include_tasks: tasks/nodeselector.yaml
+
+    - name: Start Cassandra
+      shell: |
+        oc scale --replicas=1 rc/hawkular-cassandra-1 -n openshift-infra
+        oc delete job hawkular-metrics-schema -n openshift-infra
+        oc create -f files/hawkular-metrics-schema.yaml
+      when: app == "cassandra"
+
+    - name: Start Prometheus
+      shell: >-
+        oc scale --replicas=2 statefulset/prometheus-k8s -n openshift-monitoring
+      when: app == "prometheus"
+

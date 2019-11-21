@@ -1,0 +1,11 @@
+---
+openshift:
+  - name: prometheus
+    device: /dev/sdb
+    server:
+      - infra04
+      - infra05  
+  - name: cassandra
+    device: /dev/sdc
+    server: 
+      - infra03

@@ -1,0 +1,13 @@
+- name: Configure scc privileged 
+  shell: |
+    oc adm policy add-scc-to-user privileged system:serviceaccount:openshift-monitoring:prometheus-k8s -n openshift-monitoring
+    oc adm policy add-scc-to-user hostmount-anyuid -z system:serviceaccount:openshift-monitoring:prometheus-k8s -n openshift-monitoring
+    oc patch statefulset/prometheus-k8s -p '{"spec":{"template":{"spec":{"containers":[{"name":"prometheus","securityContext":{"privileged": true}}]}}}}' -n openshift-monitoring
+  when: app == "prometheus"
+
+- name: Configure scc privileged 
+  shell: |
+    oc adm policy add-scc-to-user privileged system:serviceaccount:openshift-infra:cassandra -n openshift-infra
+    oc adm policy add-scc-to-user hostmount-anyuid -z system:serviceaccount:openshift-infra:cassandra -n openshift-infra
+    oc patch rc/hawkular-cassandra-1 -p '{"spec":{"template":{"spec":{"containers":[{"name":"hawkular-cassandra-1","securityContext":{"privileged": true}}]}}}}' -n openshift-infra
+  when: app == "cassandra"

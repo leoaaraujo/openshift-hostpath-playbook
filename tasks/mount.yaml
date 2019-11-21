@@ -1,0 +1,20 @@
+- name: Create Directory
+  file:
+    path: /data/{{ item.name }}
+    state: directory
+    recurse: yes
+    mode: '0777'
+  with_items:
+    - "{{ openshift }}"
+  when: item.name == "{{ app }}"
+    
+- name: Mount path 
+  mount:
+    path: /data/{{ item.name }}
+    src: "{{ item.device + '1' }}"
+    fstype: xfs
+    state: mounted
+    backup: yes
+  with_items:
+    - "{{ openshift }}"
+  when: item.name == "{{ app }}"

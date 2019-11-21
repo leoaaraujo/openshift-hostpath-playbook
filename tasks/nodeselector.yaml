@@ -1,0 +1,18 @@
+- name: Set Node Label
+  shell: >-
+    oc label node {{ item.1 }} {{ app }}=true
+  with_subelements:
+    - "{{ openshift }}"
+    - server
+  when: item.0.name  == "{{ app }}"
+
+- name: Set nodeSelector Prometheus
+  shell: >-
+    oc patch statefulset/prometheus-k8s -p '{"spec":{"template":{"spec":{"nodeSelector":{"prometheus":"true"}}}}}' -n openshift-monitoring
+  when: app == "prometheus"
+
+- name: Set nodeSelector Cassandra
+  shell: >-
+    oc patch rc/hawkular-cassandra-1 -p '{"spec":{"template":{"spec":{"nodeSelector":{"cassandra":"true"}}}}}' -n openshift-infra
+  when: app == "cassandra"
+

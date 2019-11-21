@@ -1,0 +1,9 @@
+- name: Set Volume Prometheus
+  shell: >-
+    oc set volume statefulset/prometheus-k8s --add --overwrite --name=prometheus-k8s-db --type=hostPath --path=/data/prometheus --mount-path=/prometheus -n openshift-monitoring
+  when: app == "prometheus"
+
+- name: Set Volume Cassandra
+  shell: >-
+    oc set volume rc/hawkular-cassandra-1 --add --overwrite --name=cassandra-data --type=hostPath --path=/data/cassandra --mount-path=/cassandra_data -n openshift-infra
+  when: app == "cassandra"
