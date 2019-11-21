@@ -2,7 +2,7 @@
 Playbook for configure hostpath to cassandra and prometheus in Openshift.
 
 
-- ###Files:
+- ### Files:
 
 ```
     ├── files
@@ -22,7 +22,7 @@ Playbook for configure hostpath to cassandra and prometheus in Openshift.
 
 
 
-- ###Adjust the files below:
+- ### Adjust the files below:
 
 `vim ./hosts`
 
@@ -57,7 +57,7 @@ Playbook for configure hostpath to cassandra and prometheus in Openshift.
           - infra03.local
 
 
-- ###Run:
+- ### Run:
 `ansible-playbook -i hosts playbook_hostpath.yaml -e "app=prometheus"`
 or
 `ansible-playbook -i hosts playbook_hostpath.yaml -e "app=cassandra"`
